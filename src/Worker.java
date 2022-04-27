@@ -63,9 +63,8 @@ public class Worker {
              ZipOutputStream zos = new ZipOutputStream(fos)
         ) {
             for (File file : path) {
-                FileInputStream fis = null;
-                try {
-                    fis = new FileInputStream(file);
+                //FileInputStream fis = null;
+                try (FileInputStream fis = new FileInputStream(file)) {
                     ZipEntry entry = new ZipEntry(file.getName());
                     zos.putNextEntry(entry);
                     byte[] buffer = new byte[fis.available()];
@@ -78,17 +77,18 @@ public class Worker {
                     logs.append("Не удалось добавить файл сохранения ").append(file.getName())
                             .append(" в ").append(zipPath.getName()).append(" по причине ")
                             .append(e.getMessage()).append("\n");
-                } finally {
-                    try {
-                        if (fis != null) {
-                            fis.close();
-                        }
-                    } catch (IOException e) {
-                        logs.append("Не удалось добавить файл сохранения ").append(file.getName())
-                                .append(" в ").append(zipPath.getName()).append(" по причине ")
-                                .append(e.getMessage()).append("\n");
-                    }
-                }
+                } 
+                //finally {
+                //  try {
+                //      if (fis != null) {
+                //          fis.close();
+                //      }
+                //  } catch (IOException e) {
+                //      logs.append("Не удалось добавить файл сохранения ").append(file.getName())
+                //              .append(" в ").append(zipPath.getName()).append(" по причине ")
+                //              .append(e.getMessage()).append("\n");
+                //  }
+                //}
 
             }
         } catch (IOException e) {
